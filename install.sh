@@ -218,6 +218,27 @@ parsers_complete() {
     end" +qa
 }
 
+# Points lazygit's diffs at delta. lazygit keeps its config in a different place per OS,
+# so ask it. A config you have already customized is left alone.
+configure_lazygit() {
+  has lazygit && has delta || return 0
+  local dir file
+  dir="$(lazygit --print-config-dir)"
+  file="$dir/config.yml"
+  if [ -s "$file" ]; then
+    grep -q 'diffRenderers' "$file" ||
+      printf '\nNote: %s exists, so delta was not added. See the README to add it.\n' "$file"
+    return 0
+  fi
+  step "Configuring lazygit to show diffs with delta"
+  mkdir -p "$dir"
+  cat >"$file" <<'YAML'
+git:
+  diffRenderers:
+    - command: delta --{{colorScheme}} --paging=never
+YAML
+}
+
 main() {
   case "$OS" in
     Darwin) ;;
@@ -240,6 +261,7 @@ main() {
   fi
   if [ "$OS" = Linux ]; then install_linux_font; fi
 
+  configure_lazygit
   install_rust_analyzer
   install_neovim_parts
 

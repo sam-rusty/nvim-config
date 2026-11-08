@@ -8,7 +8,7 @@ vim.g.lazyvim_ts_lsp = "tsc"
 -- Persistent undo (on by default in LazyVim) is the recovery path instead.
 vim.o.swapfile = false
 
--- VS Code/Zed style selection: Shift+arrows select, and typing replaces a selection
--- made with Shift+arrows or the mouse. Selections made with v/V still take Vim commands.
+-- VS Code/Zed style selection: Shift+arrows select, and typing replaces that selection.
+-- Mouse and v/V selections stay Visual mode, so y/d/c act on them instead of typing over.
 vim.o.keymodel = "startsel,stopsel"
-vim.o.selectmode = "mouse,key"
+vim.o.selectmode = "key"

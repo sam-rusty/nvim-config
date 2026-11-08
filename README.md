@@ -15,6 +15,15 @@ An existing `~/.config/nvim` is moved to a timestamped backup first.
 On Linux, run it as a normal user with sudo access, not as root. It supports apt, dnf,
 pacman and zypper.
 
+It also points lazygit's diffs at [delta](https://github.com/dandavison/delta). If you
+already have a lazygit config, it's left alone; add this to it yourself:
+
+```yaml
+git:
+  diffRenderers:
+    - command: delta --{{colorScheme}} --paging=never
+```
+
 Terminal settings aren't included, so set your terminal font to JetBrainsMono Nerd Font.
 
 ## Keeping machines in sync

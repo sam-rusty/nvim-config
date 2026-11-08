@@ -17,21 +17,15 @@ vim.keymap.set("n", "<leader>H", function()
   })
 end, { desc = "Open Cheatsheet" })
 
--- VS Code/Zed style editing, using Ctrl because terminals keep Cmd for themselves.
+-- A few VS Code/Zed habits, kept only where they don't hide a Vim key. In normal and
+-- visual mode y/d/p already use the system clipboard (LazyVim sets 'clipboard'), and
+-- Cmd-V pastes in every mode, so Ctrl-c/x/v, Ctrl-a, Ctrl-d and Ctrl-f stay Vim's.
 -- LazyVim already maps Ctrl-s to save.
 local map = vim.keymap.set
 
--- Copy and cut act on the current line when nothing is selected.
-map("v", "<C-c>", '"+y', { desc = "Copy" })
-map("n", "<C-c>", '"+yy', { desc = "Copy Line" })
-map("i", "<C-c>", '<Cmd>normal! "+yy<CR>', { desc = "Copy Line" })
-map("v", "<C-x>", '"+d', { desc = "Cut" })
-map("n", "<C-x>", '"+dd', { desc = "Cut Line" })
-map("i", "<C-x>", '<Cmd>normal! "+dd<CR>', { desc = "Cut Line" })
-
-map({ "n", "v" }, "<C-v>", '"+P', { desc = "Paste" })
 map("i", "<C-v>", "<C-r><C-o>+", { desc = "Paste" })
 map("c", "<C-v>", "<C-r>+", { desc = "Paste" })
+map("i", "<C-z>", "<Cmd>undo<CR>", { desc = "Undo" })
 
 -- Shift+Right should select one character, which needs selection=exclusive. Setting that
 -- globally breaks snippet placeholders (`foo(${1:bar})` + X gives `foo(Xr)`), so it only
@@ -49,30 +43,14 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end,
 })
 
-map("n", "<C-z>", "u", { desc = "Undo" })
-map("i", "<C-z>", "<Cmd>undo<CR>", { desc = "Undo" })
-map("n", "<C-y>", "<C-r>", { desc = "Redo" })
-map("i", "<C-y>", "<Cmd>redo<CR>", { desc = "Redo" })
-
--- Find in file. With a selection, searches that exact text (\V = no regex).
-map("n", "<C-f>", "/", { desc = "Find in File" })
-map("i", "<C-f>", "<Esc>/", { desc = "Find in File" })
-map("v", "<C-f>", [["zy/\V<C-r>=escape(@z, '/\')<CR><CR>]], { desc = "Find Selection in File" })
-
 -- Find in project. Ctrl-Shift-f only arrives if the terminal reports Shift with Ctrl;
--- otherwise use Space /.
+-- otherwise use Space /. In a file, use / (or * on a selection).
 map("n", "<C-S-f>", function()
   Snacks.picker.grep({ cwd = LazyVim.root() })
 end, { desc = "Find in Project" })
 map("v", "<C-S-f>", function()
   Snacks.picker.grep_word({ cwd = LazyVim.root() })
 end, { desc = "Find Selection in Project" })
-
-map("n", "<C-a>", "ggVG", { desc = "Select All" })
-map("i", "<C-a>", "<Esc>ggVG", { desc = "Select All" })
-
-map({ "n", "i" }, "<C-d>", "<Cmd>t.<CR>", { desc = "Duplicate Line" })
-map("v", "<C-d>", ":t'><CR>gv", { silent = true, desc = "Duplicate Selection" })
 
 map({ "n", "i" }, "<A-Up>", "<Cmd>silent! move .-2<CR>", { desc = "Move Line Up" })
 map({ "n", "i" }, "<A-Down>", "<Cmd>silent! move .+1<CR>", { desc = "Move Line Down" })
