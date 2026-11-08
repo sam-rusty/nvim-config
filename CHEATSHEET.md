@@ -33,7 +33,8 @@ New to Vim? Run `:Tutor` once. It takes about 30 minutes and teaches everything 
 | Key | Action |
 |---|---|
 | `Ctrl-p` or `Space Space` | Find file |
-| `Space /` | Search across the project |
+| `Ctrl-f` | Find in file (`Enter`, then `n` / `N` for next / previous) |
+| `Ctrl-Shift-f` or `Space /` | Find in project |
 | `Space s r` | Search and replace across the project |
 | `Space e` | File tree |
 | `Shift-h` / `Shift-l` | Previous / next open tab |

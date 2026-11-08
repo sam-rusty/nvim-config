@@ -54,6 +54,20 @@ map("i", "<C-z>", "<Cmd>undo<CR>", { desc = "Undo" })
 map("n", "<C-y>", "<C-r>", { desc = "Redo" })
 map("i", "<C-y>", "<Cmd>redo<CR>", { desc = "Redo" })
 
+-- Find in file. With a selection, searches that exact text (\V = no regex).
+map("n", "<C-f>", "/", { desc = "Find in File" })
+map("i", "<C-f>", "<Esc>/", { desc = "Find in File" })
+map("v", "<C-f>", [["zy/\V<C-r>=escape(@z, '/\')<CR><CR>]], { desc = "Find Selection in File" })
+
+-- Find in project. Ctrl-Shift-f only arrives if the terminal reports Shift with Ctrl;
+-- otherwise use Space /.
+map("n", "<C-S-f>", function()
+  Snacks.picker.grep({ cwd = LazyVim.root() })
+end, { desc = "Find in Project" })
+map("v", "<C-S-f>", function()
+  Snacks.picker.grep_word({ cwd = LazyVim.root() })
+end, { desc = "Find Selection in Project" })
+
 map("n", "<C-a>", "ggVG", { desc = "Select All" })
 map("i", "<C-a>", "<Esc>ggVG", { desc = "Select All" })
 
